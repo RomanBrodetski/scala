@@ -16,13 +16,6 @@ trait SimpleLinkedList[+T] {
   }
 }
 
-object SimpleLinkedList {
-  def apply[T](): SimpleLinkedList[T] = Null
-  def apply[T](ts: T*): SimpleLinkedList[T] = fromSeq(ts)
-  def fromSeq[T](seq: Seq[T]): SimpleLinkedList[T] =
-    seq.foldLeft(SimpleLinkedList[T]())((acc, t) => acc.add(t))
-}
-
 case object Null extends SimpleLinkedList[Nothing] {
   override val isEmpty = true
   override def value = throw new NoSuchElementException()
@@ -35,4 +28,11 @@ case class Cons[T](override val value: T, override val next: SimpleLinkedList[T]
   override val isEmpty = false
   override def add[Q >: T](item: Q): Cons[Q] = Cons(value, next.add(item))
   override val toSeq = value +: next.toSeq
+}
+
+object SimpleLinkedList {
+  def apply[T](): SimpleLinkedList[T] = Null
+  def apply[T](ts: T*): SimpleLinkedList[T] = fromSeq(ts)
+  def fromSeq[T](seq: Seq[T]): SimpleLinkedList[T] =
+    seq.foldLeft(SimpleLinkedList[T]())((acc, t) => acc.add(t))
 }
